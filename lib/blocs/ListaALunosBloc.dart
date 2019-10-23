@@ -7,7 +7,7 @@ class ListaAlunosBloc extends BlocBase{
 
   List<Aluno> alunos = <Aluno>[];
   
-  final StreamController<List<Aluno>> _streamController = StreamController<List<Aluno>>();
+  final StreamController<List<Aluno>> _streamController = StreamController<List<Aluno>>.broadcast();
 
   Sink get input => _streamController.sink;
   Stream<List<Aluno>> get output => _streamController.stream;

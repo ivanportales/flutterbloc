@@ -10,7 +10,7 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class HomePage extends StatelessWidget{
 
-  final listaBloc = BlocProvider.getBloc<ListaAlunosBloc>();
+  ListaAlunosBloc listaBloc;
 
   _buildList(List<Aluno> alunos){
     return ListView.builder(
@@ -41,7 +41,10 @@ class HomePage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+
+    listaBloc = BlocProvider.getBloc<ListaAlunosBloc>();
     print("ta rebuildando o build do home");
+    
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.book),
