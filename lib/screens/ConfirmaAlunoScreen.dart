@@ -1,15 +1,13 @@
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
+import 'package:streamblocproject/blocs/FilaAlunosBloc.dart';
 import 'package:streamblocproject/model/Aluno.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:streamblocproject/screens/FilaScreen.dart';
-import 'package:streamblocproject/screens/HomePage.dart';
 
-import 'AddAluno.dart';
-
-class AlunoScreen extends StatelessWidget{
+class ConfirmaAlunoScreen extends StatelessWidget{
   final Aluno aluno;
 
-  AlunoScreen({this.aluno});
+  ConfirmaAlunoScreen({this.aluno});
 
   _informationTile(String data,Icon icon){
     return ListTile(
@@ -20,25 +18,12 @@ class AlunoScreen extends StatelessWidget{
   
   @override
   Widget build(BuildContext context) {
-  
+    var listaBloc = BlocProvider.getBloc<FilaAlunosBloc>();
     return Scaffold(
       appBar: AppBar(
         title: Text("Aluno"),
         leading: Icon(Icons.perm_identity),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.view_list ,color: Colors.white,),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>HomePage()));
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.library_add ,color: Colors.white,),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>FilaScreen()));
-            },
-          ),
-        ],
+        
       ),
       body: Padding(
           padding: EdgeInsets.all(10.0),
@@ -58,6 +43,13 @@ class AlunoScreen extends StatelessWidget{
             ],
           ),
         ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.check),
+        onPressed: (){
+          listaBloc.addAluno(aluno);  
+          Navigator.pop(context);
+        },
+      ),
     );
   }
 }

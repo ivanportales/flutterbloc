@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:streamblocproject/blocs/FilaAlunosBloc.dart';
 
 import 'package:streamblocproject/blocs/ListaALunosBloc.dart';
 import 'package:streamblocproject/model/Aluno.dart';
@@ -8,9 +9,12 @@ import 'AddAluno.dart';
 import 'AlunoScreen.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-class HomePage extends StatelessWidget{
+import 'ConfirmaAlunoScreen.dart';
 
-  ListaAlunosBloc listaBloc;
+class FilaScreen extends StatelessWidget{
+
+  FilaAlunosBloc listaBloc;
+  ListaAlunosBloc cadastradosBloc;
 
   _buildList(List<Aluno> alunos){
     return ListView.builder(
@@ -41,21 +45,14 @@ class HomePage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    listaBloc = BlocProvider.getBloc<ListaAlunosBloc>();
+    listaBloc = BlocProvider.getBloc<FilaAlunosBloc>();
+    cadastradosBloc = BlocProvider.getBloc<ListaAlunosBloc>();
     print("ta rebuildando o build do home");
     
     return Scaffold(
       appBar: AppBar(
         leading: Icon(Icons.book),
-        title: Text("Alunos Cadastrados"),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.person_add,color: Colors.white,),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => AddAluno()));
-            },
-          ),
-        ],
+        title: Text("Fila de Alunos "),
       ),
       body: StreamBuilder<List<Aluno>>(
         stream: listaBloc.output,
@@ -76,14 +73,14 @@ class HomePage extends StatelessWidget{
           i.then((value){
             if(value.isNotEmpty){
               Aluno aluno = null;
-              listaBloc.alunos.forEach((it){
+              cadastradosBloc.alunos.forEach((it){
                 if(it.nome == value){
                   aluno = it;
                   return;
                 }
               });
               if(aluno != null){
-                Navigator.push(context,MaterialPageRoute(builder: (context) => AlunoScreen(aluno: aluno)));
+                Navigator.push(context,MaterialPageRoute(builder: (context) => ConfirmaAlunoScreen(aluno: aluno)));
               }
             }
           });        
